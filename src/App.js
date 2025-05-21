@@ -3,7 +3,6 @@ import { useKeyboard } from './hooks/useKeyboard';
 
 function App() {
   const {
-    text,
     handleKeyDown,
     handleKeyUp,
     handleKeyPress,

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { qwertyToDvorak } from '../components/KeyboardMapping';
 
 export const useKeyboard = () => {
@@ -10,14 +10,17 @@ export const useKeyboard = () => {
   });
   const [activeKeys, setActiveKeys] = useState([]);
 
-  const handleKeyPress = (event) => {
-    let key = event.key;
-    // Convert QWERTY key to Dvorak key if mapping exists
-    if (qwertyToDvorak[event.code]) {
-      key = String.fromCharCode(event.charCode); // Get the actual character
-    }
-    setText((prevText) => prevText + key);
-  };
+  const handleKeyPress = useCallback(
+    (event) => {
+      let key = event.key;
+      // Convert QWERTY key to Dvorak key if mapping exists
+      if (qwertyToDvorak[event.code]) {
+        key = String.fromCharCode(event.charCode); // Get the actual character
+      }
+      setText((prevText) => prevText + key);
+    },
+    []
+  );
 
   const handleKeyDown = (event) => {
     const keyCode = event.code;

@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/keyboard.css';
-import { keyboardRowsQwerty, keyboardRowsDvorak } from './KeyboardLayouts';
+import { keyboardRowsDvorak } from './KeyboardLayouts';
 import { qwertyToDvorak } from './KeyboardMapping';
 
 const Keyboard = () => {
   const [activeKey, setActiveKey] = useState(null);
-  const [isQwerty, setIsQwerty] = useState(false);
-  const keyboardLayout = isQwerty ? "QWERTY" : "DVORAK";
-  const keyboardRows = isQwerty ? keyboardRowsQwerty : keyboardRowsDvorak;
+  // const [isQwerty, setIsQwerty] = useState(false);
+  const isQwerty = false;
+  const keyboardRows = keyboardRowsDvorak;
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -33,9 +33,9 @@ const Keyboard = () => {
     };
   }, [isQwerty]);
 
-  const toggleLayout = () => {
-    setIsQwerty(!isQwerty);
-  };
+  // const toggleLayout = () => {
+  //   setIsQwerty(!isQwerty);
+  // };
 
   const handleClick = (key) => {
     setActiveKey(key.code);
@@ -44,7 +44,8 @@ const Keyboard = () => {
   return (
     <div className="keyboard-container">
 
-      {/* <button className="layout-toggle" onClick={toggleLayout}>
+      {/*
+      <button className="layout-toggle" onClick={toggleLayout}>
         {isQwerty ? 'QWERTY' : 'DVORAK'}
       </button> */}
 
