@@ -1,0 +1,48 @@
+.display-container {
+  font-size: 28px;
+  color: #bbb;
+  margin-bottom: 2em;
+  max-width: 850px;
+  max-height: 200px;
+  line-height: 1.7;
+  padding-left: 20px;
+  padding-right: 20px;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.display-container::-webkit-scrollbar {
+  display: none;
+}
+
+.character {
+  color: #bbb;
+  position: relative;
+  display: inline-block;
+  white-space: pre;
+}
+
+.cursor::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 2px;
+  height: 60%;
+  background-color: #777;
+  transform: translateY(-50%);
+  animation: blink 1s infinite;
+}
+
+.correct {
+  color: #333;
+}
+
+.wrong {
+  color: #ff4444;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}

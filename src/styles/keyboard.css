@@ -1,24 +1,6 @@
-body {
-  font-family: Arial, sans-serif;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  margin: 0;
-  background-color: #f0f0f0;
-}
-
-.app-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
 .keyboard-container {
   background-color: transparent;
-  border: 2px solid #ccc;
+  border: 1px solid #000;
   border-radius: 10px;
   padding: 20px;
   max-width: 850px;
@@ -137,15 +119,4 @@ body {
 
 .keyboard-key.space {
   width: 350px;
-}
-
-.text-display {
-  margin: 20px;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #fff;
-  min-height: 50px;
-  width: 80%;
-  text-align: left;
 }
