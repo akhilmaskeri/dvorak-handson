@@ -14,8 +14,6 @@ const Keyboard = () => {
       const keyCode = event.code;
       let mappedCode = keyCode;
 
-      console.log(isQwerty, qwertyToDvorak[keyCode]);
-
       if (isQwerty === false && keyCode.startsWith('Key') && qwertyToDvorak[keyCode]) {
         mappedCode = 'Key' + qwertyToDvorak[keyCode].toUpperCase();
       }

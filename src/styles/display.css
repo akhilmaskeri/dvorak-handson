@@ -1,19 +1,27 @@
 .display-container {
-  font-size: 28px;
+  font-size: 24px;
   color: #bbb;
   margin-bottom: 2em;
   max-width: 850px;
-  max-height: 200px;
-  line-height: 1.7;
-  padding-left: 20px;
-  padding-right: 20px;
-  overflow-y: auto;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+  line-height: 1.8;
+  height: calc(1.8em * 3); /* 3 lines * line-height */
+  padding: 20px;
+  overflow: hidden; /* Hide overflow to maintain 3-line view */
+  position: relative;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  background-color: #fafafa;
 }
 
-.display-container::-webkit-scrollbar {
-  display: none;
+.display-lines {
+  position: relative;
+  transition: transform 0.3s ease;
+}
+
+.display-line {
+  line-height: 1.8;
+  min-height: 1.8em;
+  display: block;
 }
 
 .character {
@@ -30,7 +38,7 @@
   top: 50%;
   width: 2px;
   height: 60%;
-  background-color: #777;
+  background-color: #aaa;
   transform: translateY(-50%);
   animation: blink 1s infinite;
 }
@@ -44,5 +52,5 @@
 }
 
 @keyframes blink {
-  50% { opacity: 0; }
+  /* 50% { opacity: 0; } */
 }

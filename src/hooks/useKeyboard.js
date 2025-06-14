@@ -17,7 +17,7 @@ export const useKeyboard = (initialText = '') => {
 
   useEffect(() => {
     setText(initialText);
-    setTypedCharacters(new Array(initialText.length).fill(null));
+    setTypedCharacters([]);
     setCursorPosition(0);
   }, [initialText]);
 
@@ -27,11 +27,17 @@ export const useKeyboard = (initialText = '') => {
   }, []);
 
   const getCharacterCase = useCallback((char, shiftPressed, capsLockActive) => {
+    if (!char) return '';
     const shouldBeUppercase = (shiftPressed && !capsLockActive) || (!shiftPressed && capsLockActive);
     return shouldBeUppercase ? char.toUpperCase() : char.toLowerCase();
   }, []);
 
   const handleKeyDown = useCallback((event) => {
+    // Ignore keystrokes when focus is on input elements
+    if (event.target.tagName === 'INPUT' || event.target.tagName === 'TEXTAREA') {
+      return;
+    }
+    
     // Always check caps lock state
     checkCapsLock(event);
     
@@ -102,11 +108,7 @@ export const useKeyboard = (initialText = '') => {
         event.preventDefault();
         const tabChar = '\t';
         setText(prev => prev.slice(0, cursorPosition) + tabChar + prev.slice(cursorPosition));
-        setTypedCharacters(prev => {
-          const newTyped = [...prev];
-          newTyped.splice(cursorPosition, 0, { char: tabChar, status: 'typed' });
-          return newTyped;
-        });
+        setTypedCharacters(prev => [...prev, { char: tabChar, status: 'typed' }]);
         setCursorPosition(prev => prev + 1);
         break;
 
@@ -116,15 +118,16 @@ export const useKeyboard = (initialText = '') => {
         
         // Check if space is correct against target text
         const targetSpaceChar = initialText[cursorPosition];
-        const isSpaceCorrect = targetSpaceChar ? spaceChar === targetSpaceChar : null;
-        const spaceStatus = isSpaceCorrect === null ? 'typed' : (isSpaceCorrect ? 'correct' : 'wrong');
+        let spaceStatus = 'wrong'; // Default to wrong
+        
+        if (targetSpaceChar && spaceChar === targetSpaceChar) {
+          spaceStatus = 'correct';
+        } else if (!targetSpaceChar) {
+          spaceStatus = 'extra'; // Typed beyond target text
+        }
         
         setText(prev => prev.slice(0, cursorPosition) + spaceChar + prev.slice(cursorPosition));
-        setTypedCharacters(prev => {
-          const newTyped = [...prev];
-          newTyped.splice(cursorPosition, 0, { char: spaceChar, status: spaceStatus });
-          return newTyped;
-        });
+        setTypedCharacters(prev => [...prev, { char: spaceChar, status: spaceStatus }]);
         setCursorPosition(prev => prev + 1);
         break;
 
@@ -139,21 +142,28 @@ export const useKeyboard = (initialText = '') => {
           const mappedChar = qwertyToDvorak[event.code];
           if (mappedChar) {
             charToInsert = getCharacterCase(mappedChar, event.shiftKey, capsLockActive);
-            charToInsert = charToInsert[charToInsert.length -1];
-            console.log(charToInsert);
-            
           }
 
-          // Check if character is correct against target text (if initialText exists)
+          // Safety check for null/undefined characters
+          if (!charToInsert) {
+            return;
+          }
+
+          // Check if character is correct against target text
           const targetChar = initialText[cursorPosition];
-          const isCorrect = targetChar ? charToInsert === targetChar : null;
-          const status = isCorrect === null ? 'typed' : (isCorrect ? 'correct' : 'wrong');
+          let status = 'wrong'; // Default to wrong
+          
+          if (targetChar && charToInsert === targetChar) {
+            status = 'correct';
+          } else if (!targetChar) {
+            status = 'extra'; // Typed beyond target text
+          }
 
           setText(prev => prev.slice(0, cursorPosition) + charToInsert + prev.slice(cursorPosition));
           setTypedCharacters(prev => {
-            const newTyped = [...prev];
-            newTyped.splice(cursorPosition, 0, { char: charToInsert, status: status });
-            return newTyped;
+            const newArray = [...prev, { char: charToInsert, status: status }];
+            console.log('Adding character:', charToInsert, 'Status:', status, 'Total typed:', newArray.length);
+            return newArray;
           });
           setCursorPosition(prev => prev + 1);
         }
@@ -162,6 +172,11 @@ export const useKeyboard = (initialText = '') => {
   }, [cursorPosition, text, capsLockActive, checkCapsLock, getCharacterCase, initialText]);
 
   const handleKeyUp = useCallback((event) => {
+    // Ignore keystrokes when focus is on input elements
+    if (event.target.tagName === 'INPUT' || event.target.tagName === 'TEXTAREA') {
+      return;
+    }
+    
     const keyCode = event.code;
     
     setMetadata(prev => ({

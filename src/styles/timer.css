@@ -1,0 +1,152 @@
+.timer-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.timer-container.inline {
+  margin: 0;
+}
+
+.timer-container.standalone {
+  margin-bottom: 20px;
+}
+
+.timer-display {
+  background-color: #f8f9fa;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 12px 20px;
+  text-align: center;
+  min-width: 80px;
+  transition: all 0.3s ease;
+}
+
+.timer-display.compact {
+  padding: 8px 16px;
+  min-width: 60px;
+}
+
+.timer-display.normal {
+  border-color: #007acc;
+  background-color: #f0f8ff;
+}
+
+.timer-display.warning {
+  border-color: #ff9500;
+  background-color: #fff8f0;
+  animation: pulse-warning 2s infinite;
+}
+
+.timer-display.critical {
+  border-color: #ff4444;
+  background-color: #fff0f0;
+  animation: pulse-critical 1s infinite;
+}
+
+.timer-display.countdown {
+  border-color: #28a745;
+  background-color: #f0fff4;
+  padding: 30px 40px;
+}
+
+.timer-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #666;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.timer-time {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  font-family: 'Courier New', monospace;
+  line-height: 1;
+}
+
+.timer-time.compact {
+  font-size: 18px;
+}
+
+.timer-warning {
+  font-size: 12px;
+  color: #ff4444;
+  margin-top: 5px;
+  font-weight: 500;
+}
+
+.countdown-number {
+  font-size: 72px;
+  font-weight: bold;
+  color: #28a745;
+  font-family: 'Courier New', monospace;
+  line-height: 1;
+  animation: countdown-pulse 1s ease-in-out;
+}
+
+.countdown-text {
+  font-size: 16px;
+  color: #28a745;
+  margin-top: 10px;
+  font-weight: 500;
+}
+
+@keyframes pulse-warning {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(255, 149, 0, 0.4);
+  }
+  50% {
+    transform: scale(1.02);
+    box-shadow: 0 0 0 8px rgba(255, 149, 0, 0);
+  }
+}
+
+@keyframes pulse-critical {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(255, 68, 68, 0.6);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 12px rgba(255, 68, 68, 0);
+  }
+}
+
+@keyframes countdown-pulse {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .timer-display {
+    padding: 15px 20px;
+    min-width: 100px;
+  }
+  
+  .timer-time {
+    font-size: 28px;
+  }
+  
+  .countdown-number {
+    font-size: 60px;
+  }
+  
+  .timer-display.countdown {
+    padding: 25px 30px;
+  }
+}
