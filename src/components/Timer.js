@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import '../styles/timer.css';
 
 const Timer = ({ 
@@ -23,41 +23,23 @@ const Timer = ({
     setTimeLeft(duration);
   }, [duration]);
 
-  // Start countdown when isActive becomes true and showCountdown is enabled
-  useEffect(() => {
-    if (isActive && showCountdown && !isCountingDown) {
-      startCountdown();
-    } else if (isActive && !showCountdown) {
-      startTimer();
-    } else if (!isActive) {
-      stopTimer();
-      stopCountdown();
+  const stopTimer = useCallback(() => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
     }
+  }, []);
 
-    return () => {
-      stopTimer();
-      stopCountdown();
-    };
-  }, [isActive, showCountdown]);
-
-  const startCountdown = () => {
-    setIsCountingDown(true);
+  const stopCountdown = useCallback(() => {
+    if (countdownIntervalRef.current) {
+      clearInterval(countdownIntervalRef.current);
+      countdownIntervalRef.current = null;
+    }
+    setIsCountingDown(false);
     setCountdownTime(countdownDuration);
-    
-    countdownIntervalRef.current = setInterval(() => {
-      setCountdownTime(prev => {
-        if (prev <= 1) {
-          clearInterval(countdownIntervalRef.current);
-          setIsCountingDown(false);
-          startTimer();
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-  };
+  }, [countdownDuration]);
 
-  const startTimer = () => {
+  const startTimer = useCallback(() => {
     if (onStart) onStart();
     
     intervalRef.current = setInterval(() => {
@@ -75,23 +57,41 @@ const Timer = ({
         return newTime;
       });
     }, 1000);
-  };
+  }, [onStart, onTick, onTimeUp]);
 
-  const stopTimer = () => {
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-      intervalRef.current = null;
-    }
-  };
-
-  const stopCountdown = () => {
-    if (countdownIntervalRef.current) {
-      clearInterval(countdownIntervalRef.current);
-      countdownIntervalRef.current = null;
-    }
-    setIsCountingDown(false);
+  const startCountdown = useCallback(() => {
+    setIsCountingDown(true);
     setCountdownTime(countdownDuration);
-  };
+    
+    countdownIntervalRef.current = setInterval(() => {
+      setCountdownTime(prev => {
+        if (prev <= 1) {
+          clearInterval(countdownIntervalRef.current);
+          setIsCountingDown(false);
+          startTimer();
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+  }, [countdownDuration, startTimer]);
+
+  // Start countdown when isActive becomes true and showCountdown is enabled
+  useEffect(() => {
+    if (isActive && showCountdown && !isCountingDown) {
+      startCountdown();
+    } else if (isActive && !showCountdown) {
+      startTimer();
+    } else if (!isActive) {
+      stopTimer();
+      stopCountdown();
+    }
+
+    return () => {
+      stopTimer();
+      stopCountdown();
+    };
+  }, [isActive, showCountdown, isCountingDown, startCountdown, startTimer, stopTimer, stopCountdown]);
 
   const formatTime = (seconds) => {
     return `${seconds}s`;

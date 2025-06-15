@@ -33,28 +33,6 @@ export const useTypingTest = (testSettings, targetText) => {
     }
   }, [cursorPosition, testState]);
 
-  // Handle test completion based on test type
-  useEffect(() => {
-    if (testState === 'active') {
-      const shouldComplete = checkTestCompletion();
-      if (shouldComplete) {
-        completeTest();
-      }
-    }
-  }, [cursorPosition, testState, testSettings]);
-
-  // Update WPM history for consistency calculation
-  useEffect(() => {
-    if (testState === 'active' && testStartTime) {
-      const timeElapsed = (Date.now() - testStartTime) / 1000;
-      if (timeElapsed >= 5 && timeElapsed % 2 < 0.1) { // Update every 2 seconds after 5 seconds
-        const correctChars = typedCharacters.filter(char => char && char.status === 'correct').length;
-        const currentWPM = Math.round((correctChars / 5) / (timeElapsed / 60));
-        setWpmHistory(prev => [...prev, currentWPM]);
-      }
-    }
-  }, [testState, testStartTime, typedCharacters]);
-
   const checkTestCompletion = useCallback(() => {
     if (testSettings.testType === 'wordCount') {
       // Complete when user has typed the required number of words
@@ -104,6 +82,28 @@ export const useTypingTest = (testSettings, targetText) => {
     testSettings, 
     cursorPosition
   ]);
+
+  // Handle test completion based on test type
+  useEffect(() => {
+    if (testState === 'active') {
+      const shouldComplete = checkTestCompletion();
+      if (shouldComplete) {
+        completeTest();
+      }
+    }
+  }, [cursorPosition, testState, testSettings, checkTestCompletion, completeTest]);
+
+  // Update WPM history for consistency calculation
+  useEffect(() => {
+    if (testState === 'active' && testStartTime) {
+      const timeElapsed = (Date.now() - testStartTime) / 1000;
+      if (timeElapsed >= 5 && timeElapsed % 2 < 0.1) { // Update every 2 seconds after 5 seconds
+        const correctChars = typedCharacters.filter(char => char && char.status === 'correct').length;
+        const currentWPM = Math.round((correctChars / 5) / (timeElapsed / 60));
+        setWpmHistory(prev => [...prev, currentWPM]);
+      }
+    }
+  }, [testState, testStartTime, typedCharacters]);
 
   const handleTimerTimeout = useCallback(() => {
     if (testState === 'active') {

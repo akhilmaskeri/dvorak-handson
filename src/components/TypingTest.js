@@ -22,9 +22,9 @@ const TypingTest = ({
     restartTest,
     handleTimerTimeout,
     getProgress,
-    getElapsedTime,
-    getCurrentWPM,
-    getCurrentAccuracy
+    // getElapsedTime,
+    // getCurrentWPM,
+    // getCurrentAccuracy
   } = useTypingTest(testSettings, targetText);
 
   // Notify parent of test completion

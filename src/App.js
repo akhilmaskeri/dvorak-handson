@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import Navigation from './components/Navigation';
 import TestSettings from './components/TestSettings';
 import TypingTest from './components/TypingTest';
-import Keyboard from './components/Keyboard';
-import { useKeyboard } from './hooks/useKeyboard';
-import Display from './components/Display';
+// import Keyboard from './components/Keyboard';
+// import { useKeyboard } from './hooks/useKeyboard';
+// import Display from './components/Display';
 import { generateHomeRowPassage } from './utils/stringGenerator';
 import { testConfig } from './utils/testConfig';
 
