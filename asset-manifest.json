@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/dvorak-handson/static/css/main.506590de.css",
-    "main.js": "/dvorak-handson/static/js/main.187ed6b1.js",
+    "main.css": "/dvorak-handson/static/css/main.a8fd7478.css",
+    "main.js": "/dvorak-handson/static/js/main.7aff2eb6.js",
     "index.html": "/dvorak-handson/index.html",
-    "main.506590de.css.map": "/dvorak-handson/static/css/main.506590de.css.map",
-    "main.187ed6b1.js.map": "/dvorak-handson/static/js/main.187ed6b1.js.map"
+    "main.a8fd7478.css.map": "/dvorak-handson/static/css/main.a8fd7478.css.map",
+    "main.7aff2eb6.js.map": "/dvorak-handson/static/js/main.7aff2eb6.js.map"
   },
   "entrypoints": [
-    "static/css/main.506590de.css",
-    "static/js/main.187ed6b1.js"
+    "static/css/main.a8fd7478.css",
+    "static/js/main.7aff2eb6.js"
   ]
 }
